@@ -1,0 +1,14 @@
+# Build and dependency output
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+
+# Local SQLite database created by the development API
+*.db
+*.db-shm
+*.db-wal
+
+# IDE files
+.vs/
+.idea/

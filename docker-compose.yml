@@ -1,0 +1,20 @@
+services:
+  api:
+    build: ./server
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Hub: Data Source=/app/data/game-session-hub.db
+    ports:
+      - "5180:8080"
+    volumes:
+      - game-session-data:/app/data
+
+  client:
+    build: ./client
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  game-session-data:

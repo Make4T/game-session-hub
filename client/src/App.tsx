@@ -14,13 +14,33 @@ function App() {
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(true)
 
-  const loadLobbies = async () => {
-    setLoading(true)
+  const loadLobbies = async (showLoading = true) => {
+    if (showLoading) setLoading(true)
     try { const response = await fetch(api); if (!response.ok) throw new Error('Unable to load lobbies.'); setLobbies(await response.json()); setMessage('') }
     catch (error) { setMessage(error instanceof Error ? error.message : 'Connection failed.') }
     finally { setLoading(false) }
   }
-  useEffect(() => { void loadLobbies() }, [])
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const loadInitialLobbies = async () => {
+      try {
+        const response = await fetch(api, { signal: controller.signal })
+        if (!response.ok) throw new Error('Unable to load lobbies.')
+        if (!controller.signal.aborted) {
+          setLobbies(await response.json())
+          setMessage('')
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) setMessage(error instanceof Error ? error.message : 'Connection failed.')
+      } finally {
+        if (!controller.signal.aborted) setLoading(false)
+      }
+    }
+
+    void loadInitialLobbies()
+    return () => controller.abort()
+  }, [])
 
   const createLobby = async (event: FormEvent) => {
     event.preventDefault()

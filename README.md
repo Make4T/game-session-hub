@@ -43,3 +43,11 @@ docker compose up --build
 ```
 
 Open `http://localhost:5173`. The API is available at `http://localhost:5180`, including the health endpoint at `/health`. Lobby data is stored in a named Docker volume between restarts. Stop the stack with `Ctrl+C`; use `docker compose down` to remove the containers.
+
+## Validate the API
+
+The integration test creates a lobby, joins two players and starts the session against an in-memory test host with an isolated SQLite database.
+
+```powershell
+dotnet test tests/GameSessionHub.Api.Tests/GameSessionHub.Api.Tests.csproj
+```

@@ -41,3 +41,5 @@ public sealed class LobbyMember { public Guid Id { get; set; } = Guid.NewGuid();
 public sealed record CreateLobbyRequest(string? Name, string? Region, int MaxPlayers);
 public sealed record JoinLobbyRequest(string? PlayerName);
 public sealed record LobbyResponse(Guid Id, string Name, string Region, string Status, int MaxPlayers, IReadOnlyList<string> Members, DateTime CreatedAtUtc);
+
+public partial class Program { }

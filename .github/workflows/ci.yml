@@ -25,12 +25,13 @@ jobs:
       - run: npm run lint
 
   api:
-    name: API build
+    name: API build and integration tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.0.x
-      - run: dotnet restore server/GameSessionHub.Api.csproj
+      - run: dotnet restore tests/GameSessionHub.Api.Tests/GameSessionHub.Api.Tests.csproj
       - run: dotnet build server/GameSessionHub.Api.csproj --configuration Release --no-restore
+      - run: dotnet test tests/GameSessionHub.Api.Tests/GameSessionHub.Api.Tests.csproj --configuration Release --no-restore

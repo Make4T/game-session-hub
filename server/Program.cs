@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Hub") ?? "Data Source=game-session-hub.db";
 builder.Services.AddDbContext<HubDb>(options => options.UseSqlite(connectionString));
-builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173").AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.WithOrigins(
+    "http://localhost:5173", "http://127.0.0.1:5173",
+    "http://localhost:5175", "http://127.0.0.1:5175").AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddProblemDetails();
 var app = builder.Build();
 app.UseExceptionHandler();
